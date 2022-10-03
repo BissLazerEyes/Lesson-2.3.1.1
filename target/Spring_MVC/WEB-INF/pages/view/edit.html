@@ -5,7 +5,7 @@
     <title>Update user</title>
 </head>
 <body>
-<form th:method="patch" th:action="@{/people/{id}(id=${user.getId()})}" th:object="${user}">
+<form th:method="patch" th:action="@{/users}" th:object="${user}">
     <label for="id">Id</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="id">
     <br/>
