@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import web.Service.UserService;
+import web.dao.UserDao;
 import web.model.User;
 
 import javax.validation.Valid;
@@ -13,11 +13,11 @@ import javax.validation.Valid;
 @SuppressWarnings("ALL")
 @Controller
 public class UserController {
-    private UserService service;
+    private UserDao dao;
 
     @Autowired
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(UserDao dao) {
+        this.dao = dao;
     }
 
     @ModelAttribute("newUser")
@@ -26,7 +26,7 @@ public class UserController {
     }
     @GetMapping("/users")
 	public String index(Model model){
-    	model.addAttribute("users",service.getAllUsers());
+    	model.addAttribute("users",dao.getAllUsers());
     	return "view/index";
 	}
 
@@ -34,21 +34,21 @@ public class UserController {
     public String creat(@ModelAttribute("newUser")@Valid User user,
                         BindingResult bindingResult,Model model) {
         if (bindingResult.hasErrors()){
-            model.addAttribute("users",service.getAllUsers());
+            model.addAttribute("users",dao.getAllUsers());
             return "view/index";
         }
-    	service.saveUser(user);
+    	dao.saveUser(user);
     	return "redirect:/users";
     }
 
     @DeleteMapping("/users/{id}")
     public String deletePerson(@PathVariable("id") int id){
-        service.removeUserById(id);
+        dao.removeUserById(id);
         return "redirect:/users";
     }
     @GetMapping("/users/{id}/edit")
     public String edit (@ModelAttribute("id") int id,Model model){
-        model.addAttribute("users",service.getUserById(id));
+        model.addAttribute("users",dao.getUserById(id));
         return "view/edit";
     }
 
@@ -57,7 +57,7 @@ public class UserController {
         if (bindingResult.hasErrors()){
             return "view/edit";
         }
-        service.updateUser(updateUser);
+        dao.updateUser(updateUser);
         return "redirect:/users";
     }
 }

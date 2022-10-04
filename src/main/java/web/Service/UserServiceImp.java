@@ -1,46 +1,44 @@
-package web.Service;
+package web.service;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import web.dao.UserDao;
+import web.dao.UserDaoImp;
 import web.model.User;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Service
 public class UserServiceImp implements UserService {
 
-    @PersistenceContext()
-    private EntityManager entityManager;
+    private UserDao userDao;
+
+    public UserServiceImp(UserDaoImp userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
-    @Transactional
     public void saveUser(User user) {
-        entityManager.persist(user);
-        entityManager.close();
+        userDao.saveUser(user);
     }
 
     @Override
-    @Transactional
     public void updateUser(User updateUser) {
-        entityManager.merge(updateUser);
+        userDao.updateUser(updateUser);
     }
 
     @Override
-    @Transactional
     public void removeUserById(int id) {
-        User user = entityManager.find(User.class, id);
-        if (user != null) {
-            entityManager.remove(user);
-        }
+        userDao.removeUserById(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
+        return userDao.getAllUsers();
     }
 
+    @Override
     public User getUserById(int id) {
-        return entityManager.find(User.class, id);
+        return userDao.getUserById(id);
     }
 }
