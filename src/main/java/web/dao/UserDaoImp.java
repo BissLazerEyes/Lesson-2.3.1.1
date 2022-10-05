@@ -14,20 +14,17 @@ public class UserDaoImp implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    @Transactional
     public void saveUser(User user) {
         entityManager.persist(user);
         entityManager.close();
     }
 
     @Override
-    @Transactional
     public void updateUser(User updateUser) {
         entityManager.merge(updateUser);
     }
 
     @Override
-    @Transactional
     public void removeUserById(int id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {

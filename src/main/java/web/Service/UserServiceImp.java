@@ -1,19 +1,19 @@
 package web.service;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
 import web.dao.UserDaoImp;
 import web.model.User;
 import java.util.List;
 
-@Repository
 @Service
+@Transactional
 public class UserServiceImp implements UserService {
 
     private UserDao userDao;
 
-    public UserServiceImp(UserDaoImp userDao) {
+    public UserServiceImp(UserDao userDao) {
         this.userDao = userDao;
     }
 
